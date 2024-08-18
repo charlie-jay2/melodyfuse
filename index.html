@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MelodyFuse</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <img src="melodyfuselogo.png" alt="MelodyFuse Logo" />
+        </div>
+        <ul class="nav-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Welcome to MelodyFuse</h1>
+      <p>
+        Your go-to radio station for the best tunes, news, and entertainment!
+      </p>
+      <div class="audio-player-container">
+        <audio controls>
+          <source src="http://localhost:8000/stream" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      <br />
+      <br />
+      <p1 class="requesttext"> Request a song below!</p1>
+    </main>
+
+    <iframe
+      id="JotFormIFrame-242298740914059"
+      title="Form"
+      onload="window.parent.scrollTo(0,0)"
+      allowtransparency="true"
+      allow="geolocation; microphone; camera; fullscreen"
+      src="https://form.jotform.com/242298740914059"
+      frameborder="0"
+      style="min-width: 100%; max-width: 100%; height: 539px; border: none"
+      scrolling="no">
+    </iframe>
+    <script src="https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js"></script>
+    <script>
+      window.jotformEmbedHandler(
+        "iframe[id='JotFormIFrame-242298740914059']",
+        "https://form.jotform.com/"
+      );
+    </script>
+
+    <footer>
+      <p>&copy; 2024 MelodyFuse. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
