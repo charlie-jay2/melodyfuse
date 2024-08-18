@@ -82,3 +82,47 @@ footer {
 .jotform1 {
   margin-top: -230px;
 }
+
+audio {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: transparent !important;
+}
+
+audio::-webkit-media-controls-play-button {
+  filter: invert(32%) sepia(91%) saturate(5348%) hue-rotate(353deg)
+    brightness(103%) contrast(108%);
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+  color: red !important;
+}
+
+audio::-webkit-media-controls-timeline {
+  background-color: transparent !important;
+}
+
+audio::-webkit-media-controls-volume-slider-container,
+audio::-webkit-media-controls-mute-button {
+  background-color: transparent !important;
+}
+
+audio::-moz-range-track {
+  background-color: red;
+}
+
+audio::-ms-fill-lower,
+audio::-ms-fill-upper {
+  background-color: red;
+}
+
+audio::-webkit-media-controls-volume-slider {
+  filter: invert(32%) sepia(91%) saturate(5348%) hue-rotate(353deg)
+    brightness(103%) contrast(108%);
+}
