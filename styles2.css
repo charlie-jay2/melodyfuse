@@ -7,14 +7,79 @@
 body {
   font-family: Lexend;
   color: white;
+  background-color: #00274d;
+}
+
+header {
   background-color: darkgoldenrod;
+  padding: 0px;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .logo img {
-  height: 450px;
+  height: 100px;
+  margin-right: 900px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  margin: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.nav-links a {
+  color: white;
+  transition: color 0.5s ease-in-out;
+}
+
+.nav-links a:hover {
+  color: #00274d;
+  transition: color 0.5s ease-in-out;
 }
 
 main {
   padding: 50px;
   text-align: center;
+  margin-top: -35px;
+}
+
+.requesttext {
+  padding-top: 50px;
+  font-size: xx-large;
+  font-family: Lexend;
+  font-weight: bold;
+}
+
+.audio-player-container {
+  margin-top: 230px;
+}
+
+footer {
+  background-color: darkgoldenrod;
+  padding: 17px;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+.jotform1 {
+  margin-top: -230px;
 }
