@@ -8,11 +8,22 @@ document.addEventListener('DOMContentLoaded', function () {
     // Open the popup
     openFormBtn.addEventListener('click', function () {
         popupOverlay.style.display = 'flex';
+        requestForm.style.display = 'block'; // Ensure the form is visible
+        formResponse.innerHTML = ''; // Clear any previous response message
     });
 
     // Close the popup
     closeFormBtn.addEventListener('click', function () {
-        popupOverlay.style.display = 'none';
+        // Reset the form and response message
+        requestForm.reset();
+        formResponse.innerHTML = '';
+
+        // Fade out the popup
+        popupOverlay.style.opacity = '0';
+        setTimeout(function () {
+            popupOverlay.style.display = 'none';
+            popupOverlay.style.opacity = '1'; // Reset opacity for future use
+        }, 600); // Match this timeout with the CSS fade-out duration
     });
 
     // Handle form submission
@@ -29,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(function () {
                 popupOverlay.style.display = 'none';
                 popupOverlay.style.opacity = '1'; // Reset opacity for future use
+                requestForm.style.display = 'block'; // Reset form visibility for next time
             }, 600); // Match this timeout with the CSS fade-out duration
         }, 2000);
     });
