@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const popupOverlay = document.getElementById('popup-overlay');
     const requestForm = document.getElementById('request-form');
     const formResponse = document.getElementById('form-response');
+    const listenLiveBtn = document.getElementById('listen-live-btn');
+    const audioPlayer = document.querySelector('.audio-player-container audio');
 
     // Open the popup
     openFormBtn.addEventListener('click', function () {
@@ -43,5 +45,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 requestForm.style.display = 'block'; // Reset form visibility for next time
             }, 600); // Match this timeout with the CSS fade-out duration
         }, 2000);
+    });
+
+    // Handle Listen Live button click
+    listenLiveBtn.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default anchor behavior
+
+        // Play the audio
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            listenLiveBtn.textContent = 'Pause Live'; // Change button text to indicate playback
+        } else {
+            audioPlayer.pause();
+            listenLiveBtn.textContent = 'Listen Live'; // Change button text to indicate paused state
+        }
     });
 });
