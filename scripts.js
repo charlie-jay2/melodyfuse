@@ -1,47 +1,35 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', function () {
     const openFormBtn = document.getElementById('open-form-btn');
-    const popupOverlay = document.getElementById('popup-overlay');
     const closeFormBtn = document.getElementById('close-form-btn');
+    const popupOverlay = document.getElementById('popup-overlay');
     const requestForm = document.getElementById('request-form');
     const formResponse = document.getElementById('form-response');
 
+    // Open the popup
     openFormBtn.addEventListener('click', function () {
         popupOverlay.style.display = 'flex';
     });
 
+    // Close the popup
     closeFormBtn.addEventListener('click', function () {
         popupOverlay.style.display = 'none';
     });
 
-    window.addEventListener('click', function (event) {
-        if (event.target === popupOverlay) {
-            popupOverlay.style.display = 'none';
-        }
-    });
-
+    // Handle form submission
     requestForm.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the form from submitting the default way
+        event.preventDefault();
 
-        const formData = new FormData(requestForm);
-        const data = {};
-        formData.forEach((value, key) => (data[key] = value));
+        // Show success message and hide form
+        requestForm.style.display = 'none';
+        formResponse.innerHTML = '<p>Form sent successfully!</p>';
 
-        fetch('https://script.google.com/macros/s/AKfycbzp3nvveJdFWWSijPMY2IK-fc2qlli03QlFCceinXQQ1QBfmVZHeCjwMZ5XJemO1wI/exec', { // Replace with your Google Apps Script URL
-            method: 'POST',
-            contentType: 'application/json',
-            body: JSON.stringify(data),
-        })
-            .then(response => response.text())
-            .then(result => {
-                formResponse.textContent = 'Your song request has been sent!';
-                requestForm.reset();
-                setTimeout(() => {
-                    popupOverlay.style.display = 'none';
-                }, 2000);
-            })
-            .catch(error => {
-                formResponse.textContent = 'There was an error sending your request.';
-            });
+        // Fade out the popup after 2 seconds
+        setTimeout(function () {
+            popupOverlay.style.opacity = '0';
+            setTimeout(function () {
+                popupOverlay.style.display = 'none';
+                popupOverlay.style.opacity = '1'; // Reset opacity for future use
+            }, 600); // Match this timeout with the CSS fade-out duration
+        }, 2000);
     });
 });

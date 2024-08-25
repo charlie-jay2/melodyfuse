@@ -77,7 +77,11 @@
         <div class="popup-form">
           <button class="close-btn" id="close-form-btn">&times;</button>
           <h2>Request a Song</h2>
-          <form id="request-form">
+          <form
+            name="song-request"
+            method="POST"
+            data-netlify="true"
+            id="request-form">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required /><br /><br />
 

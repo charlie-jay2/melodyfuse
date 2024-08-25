@@ -105,6 +105,7 @@ main {
   align-items: center;
   z-index: 1000;
   color: black;
+  transition: opacity 0.6s ease;
 }
 
 .popup-form {
