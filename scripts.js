@@ -1,63 +1,49 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const openFormBtn = document.getElementById('open-form-btn');
-    const closeFormBtn = document.getElementById('close-form-btn');
-    const popupOverlay = document.getElementById('popup-overlay');
-    const requestForm = document.getElementById('request-form');
-    const formResponse = document.getElementById('form-response');
-    const listenLiveBtn = document.getElementById('listen-live-btn');
-    const audioPlayer = document.querySelector('.audio-player-container audio');
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("#request-form");
+    const popupOverlay = document.querySelector("#popup-overlay");
+    const formResponse = document.querySelector("#form-response");
 
-    // Open the popup
-    openFormBtn.addEventListener('click', function () {
-        popupOverlay.style.display = 'flex';
-        requestForm.style.display = 'block'; // Ensure the form is visible
-        formResponse.innerHTML = ''; // Clear any previous response message
-    });
-
-    // Close the popup
-    closeFormBtn.addEventListener('click', function () {
-        // Reset the form and response message
-        requestForm.reset();
-        formResponse.innerHTML = '';
-
-        // Fade out the popup
-        popupOverlay.style.opacity = '0';
-        setTimeout(function () {
-            popupOverlay.style.display = 'none';
-            popupOverlay.style.opacity = '1'; // Reset opacity for future use
-        }, 600); // Match this timeout with the CSS fade-out duration
-    });
-
-    // Handle form submission
-    requestForm.addEventListener('submit', function (event) {
+    const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Show success message and hide form
-        requestForm.style.display = 'none';
-        formResponse.innerHTML = '<p>Form sent successfully!</p>';
+        const formData = new FormData(form);
 
-        // Fade out the popup after 2 seconds
-        setTimeout(function () {
-            popupOverlay.style.opacity = '0';
-            setTimeout(function () {
-                popupOverlay.style.display = 'none';
-                popupOverlay.style.opacity = '1'; // Reset opacity for future use
-                requestForm.style.display = 'block'; // Reset form visibility for next time
-            }, 600); // Match this timeout with the CSS fade-out duration
-        }, 2000);
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(formData).toString(),
+        })
+            .then(() => {
+                formResponse.textContent = "Form sent successfully";
+                setTimeout(() => {
+                    popupOverlay.style.opacity = 0;
+                    setTimeout(() => {
+                        popupOverlay.style.display = "none";
+                        form.reset();
+                        formResponse.textContent = "";
+                        popupOverlay.style.opacity = 1;
+                    }, 500); // Match this duration with the fade-out duration
+                }, 2000);
+            })
+            .catch((error) => {
+                formResponse.textContent = "There was an error sending the form.";
+                console.error("Form submission error:", error);
+            });
+    };
+
+    form.addEventListener("submit", handleSubmit);
+
+    document.querySelector("#open-form-btn").addEventListener("click", () => {
+        popupOverlay.style.display = "flex";
     });
 
-    // Handle Listen Live button click
-    listenLiveBtn.addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent default anchor behavior
-
-        // Play the audio
-        if (audioPlayer.paused) {
-            audioPlayer.play();
-            listenLiveBtn.textContent = 'Pause Live'; // Change button text to indicate playback
-        } else {
-            audioPlayer.pause();
-            listenLiveBtn.textContent = 'Listen Live'; // Change button text to indicate paused state
-        }
+    document.querySelector("#close-form-btn").addEventListener("click", () => {
+        popupOverlay.style.opacity = 0;
+        setTimeout(() => {
+            popupOverlay.style.display = "none";
+            form.reset();
+            formResponse.textContent = "";
+            popupOverlay.style.opacity = 1;
+        }, 500); // Match this duration with the fade-out duration
     });
 });

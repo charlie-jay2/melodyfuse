@@ -33,7 +33,7 @@
         <p>
           Your go-to radio station for the best tunes, news, and entertainment!
         </p>
-        <a href="#audio-player" id="listen-live-btn" class="btn">Listen Live</a>
+        <a href="#audio-player" class="btn">Listen Live</a>
         <button id="open-form-btn" class="btn">Request a Song</button>
       </div>
     </header>
@@ -77,12 +77,9 @@
         <div class="popup-form">
           <button class="close-btn" id="close-form-btn">&times;</button>
           <h2>Request a Song</h2>
-          <form
-            name="song-request"
-            method="POST"
-            data-netlify="true"
-            netlify
-            id="request-form">
+          <form name="song-request" id="request-form">
+            <input type="hidden" name="form-name" value="song-request" />
+
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required /><br /><br />
 
@@ -102,7 +99,7 @@
       </div>
     </main>
 
-    <footer>
+    <footer class="footer">
       <p>
         &copy; 2024 MelodyFuse. All rights reserved.
         <a href="./privacy.html">Privacy Policy</a>
