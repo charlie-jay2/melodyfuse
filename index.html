@@ -35,6 +35,7 @@
       href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap"
       rel="stylesheet" />
     <script src="scripts.js" defer></script>
+    <script src="notibar.js" defer></script>
   </head>
   <body>
     <header>
@@ -52,13 +53,17 @@
           <li><a href="https://discord.gg/CpYw9CDzMn">Discord</a></li>
         </ul>
       </nav>
+
+      <div class="notibar"></div>
+      <!-- Add this line -->
+
       <div class="hero">
         <h1>Welcome to Melody Fuse</h1>
         <p>
           Your go-to radio station for the best tunes, news, and entertainment!
         </p>
         <a href="#audio-player" class="btn">Listen Live</a>
-        <button id="open-form-btn" class="btn">Request a Song</button>
+        <button id="open-form-btn" class="btn" disabled>Request a Song</button>
       </div>
     </header>
 
@@ -128,11 +133,11 @@
         &copy; 2024 MelodyFuse. All rights reserved.
         <a href="./privacy.html">Privacy Policy</a>
       </p>
-      <div class="social-media">
+      <!-- <div class="social-media">
         <a href="https://facebook.com/yourpage" target="_blank">Facebook</a>
         <a href="https://twitter.com/yourpage" target="_blank">Twitter</a>
         <a href="https://instagram.com/yourpage" target="_blank">Instagram</a>
-      </div>
+      </div> -->
     </footer>
   </body>
 </html>
