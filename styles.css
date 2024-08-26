@@ -295,3 +295,14 @@ audio::-webkit-media-controls-panel {
 #events-table tbody tr:nth-child(odd) {
   background-color: #1e1e1e;
 }
+
+.nls {
+  color: inherit; /* Keep the text color the same as surrounding text */
+  text-decoration: none; /* Remove the underline */
+  cursor: pointer; /* Ensure the cursor changes to a pointer on hover */
+  transition: 0.6s ease-in-out;
+}
+
+.nls:hover {
+  color: #121212;
+}

@@ -8,7 +8,6 @@
     <meta
       name="description"
       content="Your go-to radio station for the best tunes, news, and entertainment!" />
-
     <meta property="og:title" content="Melody Fuse" />
     <meta
       property="og:description"
@@ -37,6 +36,18 @@
     <script src="scripts.js" defer></script>
     <script src="notibar.js" defer></script>
     <script src="events.js" defer></script>
+    <style>
+      /* Custom styles to remove link styling */
+      .no-link-style {
+        color: inherit;
+        text-decoration: none;
+        cursor: text;
+      }
+      /* Smooth scrolling for anchor links */
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -56,7 +67,6 @@
       </nav>
 
       <div class="notibar"></div>
-      <!-- Add this line -->
 
       <div class="hero">
         <h1>Welcome to Melody Fuse</h1>
@@ -86,7 +96,8 @@
         <h2>Our Features</h2>
         <div class="feature-grid">
           <div class="feature">
-            <h3>DJ Schedule</h3>
+            <!-- Remove the link styling by using a custom CSS class -->
+            <a href="./schedule.html" class="nls"><h3>DJ Schedule</h3></a>
             <p>
               Find out who’s on air and when. Stay tuned for your favorite DJs
               and shows.
@@ -97,13 +108,15 @@
             <p>Explore curated playlists for every mood and occasion.</p>
           </div>
           <div class="feature">
-            <h3>Events</h3>
+            <!-- Scrolls to the events section -->
+            <a href="#events-section" class="nls"><h3>Events</h3></a>
             <p>Stay updated with our upcoming events and live broadcasts.</p>
           </div>
         </div>
       </section>
 
-      <section class="events">
+      <!-- Ensure the section has the corresponding ID -->
+      <section class="events" id="events-section">
         <h2>Events</h2>
         <table id="events-table">
           <thead>
@@ -150,11 +163,6 @@
         &copy; 2024 MelodyFuse. All rights reserved.
         <a href="./privacy.html">Privacy Policy</a>
       </p>
-      <!-- <div class="social-media">
-        <a href="https://facebook.com/yourpage" target="_blank">Facebook</a>
-        <a href="https://twitter.com/yourpage" target="_blank">Twitter</a>
-        <a href="https://instagram.com/yourpage" target="_blank">Instagram</a>
-      </div> -->
     </footer>
   </body>
 </html>
