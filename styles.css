@@ -311,3 +311,36 @@ audio::-webkit-media-controls-panel {
 .current-hosting {
   padding-bottom: 20px;
 }
+
+/* Particle system styles */
+.particle-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Ensure particles do not interfere with user interaction */
+  overflow: hidden;
+  z-index: 0; /* Behind all content */
+}
+
+.particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background-color: rgba(128, 128, 128, 0.7); /* Gray particles */
+  border-radius: 50%;
+  animation: move 10s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes move {
+  0% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
