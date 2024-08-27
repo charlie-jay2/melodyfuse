@@ -55,3 +55,58 @@ document.getElementById('listen-live-btn').addEventListener('click', function (e
         audioPlayer.play();
     }
 });
+
+document.getElementById('request-form').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    try {
+        // Fetch the parts of the webhook URL from the .txt files
+        const part1 = await fetch('p1.txt').then(response => response.text());
+        const part2 = await fetch('p2.txt').then(response => response.text());
+        const part3 = await fetch('p3.txt').then(response => response.text());
+        const part4 = await fetch('p4.txt').then(response => response.text());
+
+        // Construct the webhook URL
+        const webhookURL = part1 + part2 + part3 + part4;
+
+        const name = document.getElementById('name').value;
+        const song = document.getElementById('song').value;
+        const anonymous = document.getElementById('anonymous').value;
+
+        // Determine the color based on anonymity
+        const color = anonymous === 'Yes' ? 0xFF0000 : 0x00FF00; // Red if anonymous, Green if not
+
+        const payload = {
+            embeds: [
+                {
+                    title: name, // The title will be the user's name
+                    color: color, // Embed color
+                    fields: [
+                        {
+                            name: 'Requested Song:',
+                            value: song
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const response = await fetch(webhookURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            document.getElementById('form-response').textContent = 'Your request has been sent!';
+            document.getElementById('request-form').reset();
+        } else {
+            document.getElementById('form-response').textContent = 'There was an error sending your request. Please try again later.';
+        }
+    } catch (error) {
+        document.getElementById('form-response').textContent = 'There was an error sending your request. Please try again later.';
+    }
+});
+
