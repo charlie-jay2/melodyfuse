@@ -55,7 +55,6 @@ document.getElementById('listen-live-btn').addEventListener('click', function (e
         audioPlayer.play();
     }
 });
-
 document.getElementById('request-form').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -78,6 +77,10 @@ document.getElementById('request-form').addEventListener('submit', async functio
                     {
                         name: 'Requested Song:',
                         value: song
+                    },
+                    {
+                        name: 'Anonymous',
+                        value: anonymous
                     }
                 ]
             }
