@@ -47,3 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 500); // Match this duration with the fade-out duration
     });
 });
+
+document.getElementById('listen-live-btn').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent any default action (scrolling)
+    const audioPlayer = document.querySelector('#audio-player audio');
+    if (audioPlayer) {
+        audioPlayer.play();
+    }
+});
