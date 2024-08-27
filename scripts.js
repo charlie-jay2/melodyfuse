@@ -55,6 +55,7 @@ document.getElementById('listen-live-btn').addEventListener('click', function (e
         audioPlayer.play();
     }
 });
+
 document.getElementById('request-form').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -69,6 +70,7 @@ document.getElementById('request-form').addEventListener('submit', async functio
     const color = anonymous === 'Yes' ? 0xFF0000 : 0x00FF00; // Red if anonymous, Green if not
 
     const payload = {
+        content: "Please react with ✅ once played.",
         embeds: [
             {
                 title: name, // The title will be the user's name

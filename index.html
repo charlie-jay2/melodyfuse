@@ -36,6 +36,7 @@
     <script src="scripts.js" defer></script>
     <script src="notibar.js" defer></script>
     <script src="events.js" defer></script>
+    <script src="sched.js" defer></script>
     <style>
       /* Custom styles to remove link styling */
       .no-link-style {
@@ -80,6 +81,10 @@
     </header>
 
     <main>
+      <div class="current-hosting">
+        <h2>Currently Hosting:</h2>
+        <p id="current-dj">Loading...</p>
+      </div>
       <section id="audio-player" id="live-audio">
         <h2>Live Stream</h2>
         <div class="audio-player-container">
@@ -136,6 +141,10 @@
         <div class="popup-form">
           <button class="close-btn" id="close-form-btn">&times;</button>
           <h2>Request a Song</h2>
+          <p1
+            >Song requests will only be played when a Live Presenter is
+            active.</p1
+          >
           <form id="request-form">
             <input type="hidden" name="form-name" value="song-request" />
 
