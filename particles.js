@@ -18,4 +18,4 @@ function createParticle() {
 }
 
 // Continuously create particles every 300ms
-setInterval(createParticle, 100);
+setInterval(createParticle, 300);
