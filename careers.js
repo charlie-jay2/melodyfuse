@@ -3,14 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
         {
             title: "Radio Presenter",
             description: "We are looking for an energetic and creative Radio Presenter to join our team.",
-            deadline: "2024-08-29T23:59:59",
-            webhook: "https://discord.com/api/webhooks/your_webhook_url_1"
+            deadline: "2024-09-20T13:00:00",
+            webhook: "https://discord.com/api/webhooks/1278494253437419570/0DvmJcOfaqqNUP-PQus0IXWtaCYpBD2iTGjXiq6f2QzI9L_GD_4-zPQuVf1vYY59hzSm"
         },
         {
             title: "Technician",
             description: "Join our technical team to ensure our broadcasts run smoothly.",
-            deadline: "2024-10-15T23:59:59",
-            webhook: "https://discord.com/api/webhooks/your_webhook_url_2"
+            deadline: "2024-9-20T13:00:00",
+            webhook: "https://discord.com/api/webhooks/1278494253437419570/0DvmJcOfaqqNUP-PQus0IXWtaCYpBD2iTGjXiq6f2QzI9L_GD_4-zPQuVf1vYY59hzSm"
         }
     ];
 
@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const applicationForm = document.getElementById("application-form");
     const webhookUrlInput = document.getElementById("webhook-url");
     const formResponse = document.getElementById("form-response");
+    let currentJobTitle = "";
 
     closeFormBtn.addEventListener("click", () => {
         popupOverlay.style.display = "none";
@@ -63,7 +64,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const formData = new FormData(applicationForm);
         const webhookUrl = formData.get("webhook-url");
         const payload = {
-            content: `**New Application Submitted**\n**Name:** ${formData.get("name")}\n**Email:** ${formData.get("email")}\n**Message:** ${formData.get("message")}`
+            embeds: [
+                {
+                    title: `New Application for ${currentJobTitle}`,
+                    description: `**Name:** ${formData.get("name")}\n**Email:** ${formData.get("email")}\n**Message:** ${formData.get("message")}`,
+                    color: 5814783 // Optional: Change to a color code you like (in decimal)
+                }
+            ]
         };
 
         try {
@@ -89,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function openForm(job) {
         document.getElementById("form-title").textContent = `Apply for ${job.title}`;
         webhookUrlInput.value = job.webhook;
+        currentJobTitle = job.title;
         popupOverlay.style.display = "flex";
     }
 });
