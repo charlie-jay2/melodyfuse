@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Careers at Melody Fuse</title>
+
+    <meta
+      name="description"
+      content="Join the Melody Fuse team and work with the best in the industry!" />
+    <meta property="og:title" content="Melody Fuse Careers" />
+    <meta
+      property="og:description"
+      content="Join the Melody Fuse team and work with the best in the industry!" />
+    <meta
+      property="og:image"
+      content="https://melodyfuse.netlify.app/melodyfuselogo.png" />
+    <meta
+      property="og:url"
+      content="https://melodyfuse.netlify.app/careers.html" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Melody Fuse Careers" />
+    <meta
+      name="twitter:description"
+      content="Join the Melody Fuse team and work with the best in the industry!" />
+    <meta
+      name="twitter:image"
+      content="https://melodyfuse.netlify.app/melodyfuselogo.png" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <script src="careers.js" defer></script>
+    <style>
+      .job-listing {
+        margin-bottom: 20px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .job-listing h3 {
+        margin-top: 0;
+      }
+      .apply-btn {
+        background-color: #3c3c3c;
+        color: white;
+        padding: 0.5rem 1rem;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+      }
+      .apply-btn:hover {
+        background-color: #1e1e1e;
+      }
+      .apply-btn:disabled {
+        background-color: #aaa;
+        cursor: not-allowed;
+      }
+      .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+      .popup-form {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 5px;
+        text-align: left;
+        width: 90%;
+        max-width: 500px;
+      }
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+
+      .footer {
+        margin-top: 12.4rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+        <nav>
+            <div class="logo">
+              <a href="./index.html"
+                ><img src="melodyfuselogo.png" alt="MelodyFuse Logo"
+              /></a>
+            </div>
+            <ul class="nav-links">
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./about.html">About</a></li>
+              <li><a href="./schedule.html">Schedule</a></li>
+              <li><a href="./contact.html">Contact</a></li>
+              <li><a href="https://discord.gg/5fXtmvzAxQ">Discord</a></li>
+              <li><a href="./careers.html">Careers</a></li>
+            </ul>
+          </nav>
+    </header>
+
+    <main>
+      <h1>Careers at Melody Fuse</h1>
+      <p>
+        Join our team and be part of the most exciting radio station around!
+      </p>
+<br></br>
+      <section id="job-listings">
+        <!-- Job listings will be inserted here by JavaScript -->
+      </section>
+
+      <!-- Application Form Popup -->
+      <div class="popup-overlay" id="popup-overlay">
+        <div class="popup-form">
+          <button class="close-btn" id="close-form-btn">&times;</button>
+          <h2 id="form-title">Apply for a Position</h2>
+          <form id="application-form">
+            <input type="hidden" id="webhook-url" name="webhook-url" value="" />
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required /><br /><br />
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required /><br /><br />
+
+            <label for="message">Why are you interested in this position?</label
+            ><br />
+            <textarea id="message" name="message" rows="4" required></textarea
+            ><br /><br />
+
+            <button type="submit" class="apply-btn">Submit Application</button>
+          </form>
+          <div id="form-response" class="form-response"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>
+        &copy; 2024 MelodyFuse. All rights reserved.
+        <a href="./privacy.html">Privacy Policy</a>
+      </p>
+    </footer>
+  </body>
+</html>
