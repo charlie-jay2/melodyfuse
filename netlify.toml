@@ -2,3 +2,11 @@
   from = "/*"
   to = "/404/404.html"
   status = 404
+
+[build]
+  functions = "netlify/functions" # Directory where your serverless functions are located
+
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

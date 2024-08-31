@@ -1,0 +1,10 @@
+{
+  "name": "your-project",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "netlify build"
+  },
+  "dependencies": {
+    "mongodb": "^4.4.0"
+  }
+}

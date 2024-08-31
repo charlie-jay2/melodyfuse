@@ -344,21 +344,3 @@ audio::-webkit-media-controls-panel {
     opacity: 0;
   }
 }
-
-.staff-schedule-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: calc(
-    100vh - 160px
-  ); /* Adjust this value based on your header and footer height */
-}
-
-.popup-form {
-  width: 100%;
-  max-width: 500px;
-  background: #1e1e1e;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Melody Fuse - Staff Schedule</title>
+    <meta
+      name="description"
+      content="Manage your DJ schedule and update it easily!" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="staff-schedule.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="./index.html"
+            ><img src="melodyfuselogo.png" alt="MelodyFuse Logo"
+          /></a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./about.html">About</a></li>
+          <li><a href="./schedule.html">Schedule</a></li>
+          <li><a href="./contact.html">Contact</a></li>
+          <li><a href="https://discord.gg/5fXtmvzAxQ">Discord</a></li>
+          <li><a href="./careers.html">Careers</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="current-host">
+        <h2>Staff Schedule Update</h2>
+        <form id="schedule-form">
+          <label for="date">Date:</label>
+          <select id="date" name="date"></select>
+
+          <label for="time-slot">Time Slot:</label>
+          <select id="time-slot" name="time-slot"></select>
+
+          <label for="dj-name">DJ Name:</label>
+          <input type="text" id="dj-name" name="dj-name" required />
+
+          <button type="submit">Update Schedule</button>
+          <div id="form-response" class="form-response"></div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        &copy; 2024 MelodyFuse. All rights reserved.
+        <a href="./privacy.html">Privacy Policy</a>
+      </p>
+    </footer>
+  </body>
+</html>
