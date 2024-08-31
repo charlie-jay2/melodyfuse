@@ -2,6 +2,13 @@ const { MongoClient } = require('mongodb');
 
 exports.handler = async function (event, context) {
     const MONGODB_URI = process.env.MONGODB_URI;
+    if (!MONGODB_URI) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: 'MONGODB_URI environment variable is not set.' }),
+        };
+    }
+
     const client = new MongoClient(MONGODB_URI);
 
     try {
@@ -33,10 +40,10 @@ exports.handler = async function (event, context) {
             body: JSON.stringify({ message: 'Schedule updated successfully.' }),
         };
     } catch (err) {
-        console.error(err);
+        console.error('Function error:', err);
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: 'Internal server error.' }),
+            body: JSON.stringify({ message: 'Internal server error.', error: err.message }),
         };
     } finally {
         await client.close();
