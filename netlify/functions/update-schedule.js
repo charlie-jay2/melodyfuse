@@ -1,48 +1,42 @@
 const { MongoClient } = require('mongodb');
 
-exports.handler = async (event) => {
-    if (event.httpMethod !== 'POST') {
-        return {
-            statusCode: 405,
-            body: JSON.stringify({ message: 'Method not allowed' }),
-        };
-    }
-
-    const { MONGODB_URI } = process.env;
+exports.handler = async function (event, context) {
+    const MONGODB_URI = process.env.MONGODB_URI;
     const client = new MongoClient(MONGODB_URI);
 
     try {
         await client.connect();
-        const db = client.db('melodyfuse');
-        const collection = db.collection('schedule');
+        const db = client.db('scheduleDB'); // Replace with your DB name
+        const collection = db.collection('schedules'); // Replace with your collection name
 
-        const { date, timeSlot, djName } = JSON.parse(event.body);
+        // Assuming the request body contains { date, time, djName }
+        const { date, time, djName } = JSON.parse(event.body);
 
-        // Check if the slot is already booked
-        const existingSlot = await collection.findOne({ date, timeSlot });
-
-        if (existingSlot && existingSlot.djName !== 'AutoDJ') {
+        // Check if slot is already taken
+        const existingEntry = await collection.findOne({ date, time });
+        if (existingEntry && existingEntry.djName !== 'AutoDJ') {
             return {
-                statusCode: 403,
-                body: JSON.stringify({ message: 'Slot is already booked' }),
+                statusCode: 400,
+                body: JSON.stringify({ message: 'Slot is already taken.' }),
             };
         }
 
+        // Update or insert the schedule
         await collection.updateOne(
-            { date, timeSlot },
+            { date, time },
             { $set: { djName } },
             { upsert: true }
         );
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ success: true }),
+            body: JSON.stringify({ message: 'Schedule updated successfully.' }),
         };
-    } catch (error) {
-        console.error('Database error:', error);
+    } catch (err) {
+        console.error(err);
         return {
             statusCode: 500,
-            body: JSON.stringify({ success: false, message: 'Internal server error' }),
+            body: JSON.stringify({ message: 'Internal server error.' }),
         };
     } finally {
         await client.close();
