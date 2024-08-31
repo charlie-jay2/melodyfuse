@@ -34,16 +34,16 @@
         <h2>Staff Schedule Update</h2>
         <form id="schedule-form">
           <label for="date">Date:</label>
-          <select id="date" name="date"></select>
+          <input type="date" id="date" name="date" required />
 
-          <label for="time-slot">Time Slot:</label>
-          <select id="time-slot" name="time-slot"></select>
+          <label for="time">Time:</label>
+          <input type="time" id="time" name="time" required />
 
-          <label for="dj-name">DJ Name:</label>
-          <input type="text" id="dj-name" name="dj-name" required />
+          <label for="djName">DJ Name:</label>
+          <input type="text" id="djName" name="djName" required />
 
           <button type="submit">Update Schedule</button>
-          <div id="form-response" class="form-response"></div>
+          <div id="response-message"></div>
         </form>
       </section>
     </main>
