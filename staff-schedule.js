@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
-            const response = await fetch('/netlify/functions/update-schedule', {
+            const response = await fetch('/netlify/functions/update-schedule.js', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
