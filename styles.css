@@ -344,3 +344,49 @@ audio::-webkit-media-controls-panel {
     opacity: 0;
   }
 }
+
+.schedule-form {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.schedule-form label {
+  display: block;
+  margin: 10px 0 5px;
+  color: #fff;
+}
+
+.schedule-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #2c2c2c;
+  color: #fff;
+}
+
+.schedule-form button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3c3c3c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.schedule-form button:hover {
+  background-color: #1e1e1e;
+}
+
+#response-message {
+  margin-top: 10px;
+  color: #fff;
+}
