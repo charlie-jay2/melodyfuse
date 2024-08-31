@@ -4,7 +4,6 @@
   status = 404
 
 [build]
-  publish = "public" # Adjust this to your build output directory if different
   functions = "netlify/functions" # Path to your functions directory
 
 [context.production.environment]
