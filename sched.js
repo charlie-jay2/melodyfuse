@@ -1,143 +1,131 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Function to get the dates for the current week and the first day of the next week
-    function getWeekDates() {
-        const today = new Date();
-        const dayOfWeek = today.getDay();
-        const dates = [];
+document.addEventListener('DOMContentLoaded', () => {
+    // Fetch the schedule on page load
+    fetchSchedule();
 
-        // Set to Friday (31/08/2024) if today is before that
-        const startOfWeek = new Date(today);
-        if (dayOfWeek <= 5) {
-            startOfWeek.setDate(today.getDate() - dayOfWeek + 5);
-        } else {
-            startOfWeek.setDate(today.getDate() + (7 - dayOfWeek + 5));
-        }
+    // Initialize the date picker with the correct dates
+    updateDateOptions();
 
-        // Add current week dates (Friday and Saturday)
-        for (let i = 0; i < 2; i++) {
-            const date = new Date(startOfWeek);
-            date.setDate(startOfWeek.getDate() + i);
-            dates.push(date.toLocaleDateString('en-GB'));
-        }
+    document.getElementById('staff-schedule-form').addEventListener('submit', handleFormSubmit);
+});
 
-        // Add the first day of the next week (next Friday)
-        const nextWeekStart = new Date(startOfWeek);
-        nextWeekStart.setDate(startOfWeek.getDate() + 7);
-        dates.push(nextWeekStart.toLocaleDateString('en-GB'));
-
-        return dates;
+const schedule = {
+    "31/08/2024": {
+        "00:00": "AUTO DJ",
+        "01:00": "AUTO DJ",
+        // Add other time slots
+    },
+    "01/09/2024": {
+        "00:00": "AUTO DJ",
+        "01:00": "AUTO DJ",
+        // Add other time slots
     }
+};
 
-    const hours = [
-        '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00',
-        '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',
-        '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'
-    ]; // List of hours
+// Fetch the schedule from the server
+function fetchSchedule() {
+    fetch('/api/get-schedule')
+        .then(response => response.json())
+        .then(data => {
+            Object.assign(schedule, data);
+            updateScheduleTable();
+        })
+        .catch(error => console.error('Error fetching schedule:', error));
+}
 
-    let dates = getWeekDates(); // Get the relevant dates for the current and next week
+// Update the schedule table in the UI
+function updateScheduleTable() {
+    const table = document.getElementById('schedule-table');
+    if (!table) return;
 
-    // Schedule data (initialized to 'AutoDJ')
-    const scheduleData = {};
-    dates.forEach(date => {
-        scheduleData[date] = {};
-        hours.forEach(hour => {
-            scheduleData[date][hour] = 'AutoDJ';
+    let html = '<thead><tr><th>Date</th><th>Time</th><th>DJ</th></tr></thead><tbody>';
+
+    Object.keys(schedule).forEach(date => {
+        const times = schedule[date];
+        Object.keys(times).forEach(time => {
+            html += `<tr>
+          <td>${date}</td>
+          <td>${time}</td>
+          <td>${times[time]}</td>
+        </tr>`;
         });
     });
 
-    // Function to update the staff schedule form
-    function updateStaffScheduleForm() {
-        const dateSelect = document.getElementById('date');
-        dateSelect.innerHTML = ''; // Clear existing options
+    html += '</tbody>';
+    table.innerHTML = html;
+}
 
-        dates.forEach(date => {
-            const option = document.createElement('option');
-            option.value = date;
-            option.textContent = date;
-            dateSelect.appendChild(option);
+// Handle form submission
+function handleFormSubmit(event) {
+    event.preventDefault();
+
+    const date = document.getElementById('date').value;
+    const djName = document.getElementById('dj-name').value;
+    const timeSlot = document.getElementById('time-slot').value;
+
+    if (!date || !djName || !timeSlot) {
+        document.getElementById('form-response').innerText = 'Please fill out all fields.';
+        return;
+    }
+
+    // Overwrite or add new slot in the schedule
+    if (!schedule[date]) {
+        schedule[date] = {};
+    }
+
+    schedule[date][timeSlot] = djName;
+
+    updateScheduleTable();
+
+    // Optionally, send the updated schedule to the server
+    fetch('/api/update-schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(schedule),
+    })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('form-response').innerText = 'Schedule updated successfully.';
+        })
+        .catch(error => {
+            document.getElementById('form-response').innerText = 'Error updating schedule.';
+            console.error('Error updating schedule:', error);
         });
+}
+
+// Filter available dates based on the current week and the next day's availability
+function updateDateOptions() {
+    const today = new Date();
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday of the current week
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // Saturday of the current week
+
+    const nextWeekStart = new Date(endOfWeek);
+    nextWeekStart.setDate(endOfWeek.getDate() + 1); // First day of the next week
+
+    const dateInput = document.getElementById('date');
+    const options = [];
+
+    // Collect dates for the current week
+    for (let date = new Date(startOfWeek); date <= endOfWeek; date.setDate(date.getDate() + 1)) {
+        options.push(formatDate(date));
     }
 
-    // Check if the schedule table is present (for schedule.html)
-    const headerRow = document.querySelector('#header-row');
-    const tableBody = document.querySelector('#schedule-table tbody');
+    // Add the first day of the next week
+    options.push(formatDate(nextWeekStart));
 
-    if (headerRow && tableBody) {
-        // Create header with dates
-        dates.forEach(date => {
-            const th = document.createElement('th');
-            th.textContent = date;
-            headerRow.appendChild(th);
-        });
+    // Set the date options in the form
+    dateInput.innerHTML = '';
+    options.forEach(date => {
+        dateInput.innerHTML += `<option value="${date}">${date}</option>`;
+    });
+}
 
-        // Create rows for hours and populate with DJs
-        hours.forEach(hour => {
-            const tr = document.createElement('tr');
-            const tdHour = document.createElement('td');
-            tdHour.textContent = hour;
-            tr.appendChild(tdHour);
-
-            dates.forEach(date => {
-                const td = document.createElement('td');
-                td.textContent = scheduleData[date][hour] || 'AutoDJ'; // Fallback to AutoDJ
-                tr.appendChild(td);
-            });
-
-            tableBody.appendChild(tr);
-        });
-    }
-
-    // Determine current date and hour (in UK time)
-    const now = new Date();
-    const ukTime = new Date(now.toLocaleString('en-GB', { timeZone: 'Europe/London' }));
-    const currentDate = ukTime.toLocaleDateString('en-GB'); // Format: dd/mm/yyyy
-    const currentHour = ukTime.getHours().toString().padStart(2, '0') + ':00'; // Format: hh:00
-
-    // Find the current DJ or fallback to 'AutoDJ'
-    const currentDJ = scheduleData[currentDate] && scheduleData[currentDate][currentHour] || 'AutoDJ';
-
-    // Update the "Currently Hosting:" section (for index.html)
-    const currentDjElement = document.getElementById('current-dj');
-    if (currentDjElement) {
-        currentDjElement.textContent = currentDJ;
-    }
-
-    // Update the staff-schedule form with the available dates
-    updateStaffScheduleForm();
-
-    // Handle form submission (for staff-schedule.html)
-    const staffScheduleForm = document.getElementById('staff-schedule-form');
-    if (staffScheduleForm) {
-        staffScheduleForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const date = document.getElementById('date').value;
-            const djName = document.getElementById('dj-name').value;
-            const timeSlot = document.getElementById('time-slot').value;
-
-            // Check if the time slot is already taken
-            if (scheduleData[date][timeSlot] === 'AutoDJ') {
-                scheduleData[date][timeSlot] = djName;
-                document.getElementById('form-response').textContent = `Scheduled ${djName} for ${date} at ${timeSlot}`;
-                document.getElementById('form-response').style.color = 'green';
-            } else {
-                document.getElementById('form-response').textContent = `Time slot already taken by ${scheduleData[date][timeSlot]}`;
-                document.getElementById('form-response').style.color = 'red';
-            }
-        });
-    }
-
-    // Remove past dates and reset for the next week
-    function resetWeeklySchedule() {
-        const today = new Date().toLocaleDateString('en-GB');
-        dates = dates.filter(date => date >= today);
-
-        if (dates.length === 0) {
-            dates = getWeekDates();
-            updateStaffScheduleForm();
-        }
-    }
-
-    // Run the reset function once on load
-    resetWeeklySchedule();
-});
+// Format date as YYYY-MM-DD
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
