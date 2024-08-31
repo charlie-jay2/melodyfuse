@@ -1,131 +1,72 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Fetch the schedule on page load
-    fetchSchedule();
+document.addEventListener('DOMContentLoaded', function () {
+    // Example schedule data
+    const scheduleData = {
+        '26/08/2024': {
+            // Example '00:00': 'AutoDJ',
+        },
+        '27/08/2024': {
+            // Example '00:00': 'AutoDJ',
+        },
+        '28/08/2024': {
+            // Example '00:00': 'AutoDJ',
+        },
+        '29/08/2024': {
+            // Example '00:00': 'AutoDJ',
+        },
+        '20/08/2024': {
+            // Example '00:00': 'AutoDJ',
+        },
+        '31/08/2024': {
+            // Example '00:00': 'AutoDJ',
+        },
+        '01/09/2024': {
+            // Example '00:00': 'AutoDJ',
+        },
+    };
 
-    // Initialize the date picker with the correct dates
-    updateDateOptions();
+    const hours = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']; // List of hours
+    const dates = Object.keys(scheduleData); // List of dates
 
-    document.getElementById('staff-schedule-form').addEventListener('submit', handleFormSubmit);
+    // Check if the schedule table is present (for schedule.html)
+    const headerRow = document.querySelector('#header-row');
+    const tableBody = document.querySelector('#schedule-table tbody');
+
+    if (headerRow && tableBody) {
+        // Create header with dates
+        dates.forEach(date => {
+            const th = document.createElement('th');
+            th.textContent = date;
+            headerRow.appendChild(th);
+        });
+
+        // Create rows for hours and populate with DJs
+        hours.forEach(hour => {
+            const tr = document.createElement('tr');
+            const tdHour = document.createElement('td');
+            tdHour.textContent = hour;
+            tr.appendChild(tdHour);
+
+            dates.forEach(date => {
+                const td = document.createElement('td');
+                td.textContent = scheduleData[date][hour] || 'AutoDJ'; // Fallback to AutoDJ
+                tr.appendChild(td);
+            });
+
+            tableBody.appendChild(tr);
+        });
+    }
+
+    // Determine current date and hour
+    const now = new Date();
+    const currentDate = now.toLocaleDateString('en-GB'); // Format: dd/mm/yyyy
+    const currentHour = now.getHours().toString().padStart(2, '0') + ':00'; // Format: hh:00
+
+    // Find the current DJ or fallback to 'AutoDJ'
+    const currentDJ = scheduleData[currentDate] && scheduleData[currentDate][currentHour] || 'AutoDJ';
+
+    // Update the "Currently Hosting:" section (for index.html)
+    const currentDjElement = document.getElementById('current-dj');
+    if (currentDjElement) {
+        currentDjElement.textContent = currentDJ;
+    }
 });
-
-const schedule = {
-    "31/08/2024": {
-        "00:00": "AUTO DJ",
-        "01:00": "AUTO DJ",
-        // Add other time slots
-    },
-    "01/09/2024": {
-        "00:00": "AUTO DJ",
-        "01:00": "AUTO DJ",
-        // Add other time slots
-    }
-};
-
-// Fetch the schedule from the server
-function fetchSchedule() {
-    fetch('/api/get-schedule')
-        .then(response => response.json())
-        .then(data => {
-            Object.assign(schedule, data);
-            updateScheduleTable();
-        })
-        .catch(error => console.error('Error fetching schedule:', error));
-}
-
-// Update the schedule table in the UI
-function updateScheduleTable() {
-    const table = document.getElementById('schedule-table');
-    if (!table) return;
-
-    let html = '<thead><tr><th>Date</th><th>Time</th><th>DJ</th></tr></thead><tbody>';
-
-    Object.keys(schedule).forEach(date => {
-        const times = schedule[date];
-        Object.keys(times).forEach(time => {
-            html += `<tr>
-          <td>${date}</td>
-          <td>${time}</td>
-          <td>${times[time]}</td>
-        </tr>`;
-        });
-    });
-
-    html += '</tbody>';
-    table.innerHTML = html;
-}
-
-// Handle form submission
-function handleFormSubmit(event) {
-    event.preventDefault();
-
-    const date = document.getElementById('date').value;
-    const djName = document.getElementById('dj-name').value;
-    const timeSlot = document.getElementById('time-slot').value;
-
-    if (!date || !djName || !timeSlot) {
-        document.getElementById('form-response').innerText = 'Please fill out all fields.';
-        return;
-    }
-
-    // Overwrite or add new slot in the schedule
-    if (!schedule[date]) {
-        schedule[date] = {};
-    }
-
-    schedule[date][timeSlot] = djName;
-
-    updateScheduleTable();
-
-    // Optionally, send the updated schedule to the server
-    fetch('/api/update-schedule', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(schedule),
-    })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('form-response').innerText = 'Schedule updated successfully.';
-        })
-        .catch(error => {
-            document.getElementById('form-response').innerText = 'Error updating schedule.';
-            console.error('Error updating schedule:', error);
-        });
-}
-
-// Filter available dates based on the current week and the next day's availability
-function updateDateOptions() {
-    const today = new Date();
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday of the current week
-
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // Saturday of the current week
-
-    const nextWeekStart = new Date(endOfWeek);
-    nextWeekStart.setDate(endOfWeek.getDate() + 1); // First day of the next week
-
-    const dateInput = document.getElementById('date');
-    const options = [];
-
-    // Collect dates for the current week
-    for (let date = new Date(startOfWeek); date <= endOfWeek; date.setDate(date.getDate() + 1)) {
-        options.push(formatDate(date));
-    }
-
-    // Add the first day of the next week
-    options.push(formatDate(nextWeekStart));
-
-    // Set the date options in the form
-    dateInput.innerHTML = '';
-    options.forEach(date => {
-        dateInput.innerHTML += `<option value="${date}">${date}</option>`;
-    });
-}
-
-// Format date as YYYY-MM-DD
-function formatDate(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
