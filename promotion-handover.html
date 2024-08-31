@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promotion Handover</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="pho.js" defer></script>
+    <style>
+      /* Center the form in the page */
+      .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 60px); /* Full height minus header/footer */
+        padding: 20px;
+        background-color: #121212;
+        box-sizing: border-box;
+      }
+
+      .promotion-form {
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        max-width: 600px;
+        width: 100%;
+      }
+
+      .promotion-form label {
+        display: block;
+        margin: 10px 0 5px;
+        color: #fff;
+      }
+
+      .promotion-form input,
+      .promotion-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background: #2c2c2c;
+        color: #fff;
+      }
+
+      .promotion-form textarea {
+        resize: vertical;
+        height: 150px;
+      }
+
+      .promotion-form button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #3c3c3c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .promotion-form button:hover {
+        background-color: #1e1e1e;
+      }
+
+      .response-message {
+        margin-top: 10px;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="./index.html"
+            ><img src="melodyfuselogo.png" alt="MelodyFuse Logo"
+          /></a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./about.html">About</a></li>
+          <li><a href="./schedule.html">Schedule</a></li>
+          <li><a href="./contact.html">Contact</a></li>
+          <li><a href="https://discord.gg/5fXtmvzAxQ">Discord</a></li>
+          <li><a href="./careers.html">Careers</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <div class="form-container">
+        <form id="promotion-form" class="promotion-form">
+          <h2>Promotion Handover</h2>
+
+          <label for="sender-name">Name of Sender:</label>
+          <input type="text" id="sender-name" name="sender-name" required />
+
+          <label for="business-name">Name of Business:</label>
+          <input type="text" id="business-name" name="business-name" required />
+
+          <label for="business-description">Description of Business:</label>
+          <textarea
+            id="business-description"
+            name="business-description"
+            required></textarea>
+
+          <label for="promotion-text">Promotion Send Off Text:</label>
+          <textarea
+            id="promotion-text"
+            name="promotion-text"
+            required></textarea>
+
+          <label for="image-upload">Any Images to Send:</label>
+          <input
+            type="file"
+            id="image-upload"
+            name="image-upload"
+            multiple
+            accept="image/*" />
+
+          <button type="submit">Submit</button>
+          <div id="response-message" class="response-message"></div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>
+        &copy; 2024 MelodyFuse. All rights reserved.
+        <a href="./privacy.html">Privacy Policy</a>
+      </p>
+    </footer>
+  </body>
+</html>
