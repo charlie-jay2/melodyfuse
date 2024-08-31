@@ -1,74 +1,62 @@
-document.getElementById('promotion-form').addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    const formData = new FormData(this);
+document.addEventListener("DOMContentLoaded", () => {
+    const promotionForm = document.getElementById('promotion-form');
+    const imageUploadInput = document.getElementById('image-upload');
     const responseMessage = document.getElementById('response-message');
-    responseMessage.textContent = 'Submitting...';
 
-    // Prepare form data
-    const formContent = {
-        content: `Promotion Request:\n\nName of Sender: ${formData.get('sender-name')}\nName of Business: ${formData.get('business-name')}\nDescription of Business: ${formData.get('business-description')}\nPromotion Send Off Text: ${formData.get('promotion-text')}`
-    };
+    // Add an event listener to check the number of files selected
+    imageUploadInput.addEventListener('change', (event) => {
+        const files = event.target.files;
 
-    // Convert images to base64 and append to formContent if any
-    const files = formData.getAll('image-upload');
-    if (files.length > 0) {
-        const imagePromises = files.map(file => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
+        if (files.length > 5) {
+            responseMessage.textContent = 'Sorry, you can only upload up to 5 images.';
+            imageUploadInput.value = ''; // Reset the input to remove the selected files
+        } else {
+            responseMessage.textContent = ''; // Clear the message if the file count is valid
+        }
+    });
+
+    promotionForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        responseMessage.textContent = 'Submitting...';
+
+        const formData = new FormData(promotionForm);
+        const files = Array.from(imageUploadInput.files).slice(0, 5); // Limit to 5 files
+
+        // Clear the images in formData and re-append the limited number of files
+        formData.delete('image-upload');
+        files.forEach((file, index) => {
+            formData.append(`file${index + 1}`, file); // Add each file with a unique name
         });
 
-        Promise.all(imagePromises).then(images => {
-            formContent.embeds = images.map(image => ({
-                image: {
-                    url: image
+        // Construct the embed payload
+        const payload = {
+            embeds: [
+                {
+                    title: "Promotion Request",
+                    description: `**Name of Sender:** ${formData.get('sender-name')}\n**Name of Business:** ${formData.get('business-name')}\n**Description of Business:** ${formData.get('business-description')}\n**Promotion Send Off Text:** ${formData.get('promotion-text')}`,
+                    color: 5814783 // Optional: Change to a color code you like (in decimal)
                 }
-            }));
+            ]
+        };
 
-            fetch('https://discord.com/api/webhooks/1279275491777450015/gcnxsIThv6RHn48JL2bbBA2ybzDA7VXu-CKe8JNpEBqTL11EtaQ6g-vH9cIxptWOv5vB', {
+        // Append the payload to FormData as a JSON string
+        formData.append('payload_json', JSON.stringify(payload));
+
+        try {
+            const response = await fetch('https://discord.com/api/webhooks/1279275491777450015/gcnxsIThv6RHn48JL2bbBA2ybzDA7VXu-CKe8JNpEBqTL11EtaQ6g-vH9cIxptWOv5vB', {
                 method: 'POST',
-                body: JSON.stringify(formContent),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        responseMessage.textContent = 'Your promotion request has been submitted successfully!';
-                    } else {
-                        responseMessage.textContent = 'Failed to submit your request. Please try again later.';
-                    }
-                })
-                .catch(error => {
-                    responseMessage.textContent = 'An error occurred. Please try again later.';
-                    console.error('Error:', error);
-                });
-        }).catch(error => {
-            responseMessage.textContent = 'An error occurred with image processing. Please try again later.';
-            console.error('Image Error:', error);
-        });
-    } else {
-        fetch('https://discord.com/api/webhooks/1279275491777450015/gcnxsIThv6RHn48JL2bbBA2ybzDA7VXu-CKe8JNpEBqTL11EtaQ6g-vH9cIxptWOv5vB', {
-            method: 'POST',
-            body: JSON.stringify(formContent),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    responseMessage.textContent = 'Your promotion request has been submitted successfully!';
-                } else {
-                    responseMessage.textContent = 'Failed to submit your request. Please try again later.';
-                }
-            })
-            .catch(error => {
-                responseMessage.textContent = 'An error occurred. Please try again later.';
-                console.error('Error:', error);
+                body: formData // Send FormData directly, including files and payload_json
             });
-    }
+
+            if (response.ok) {
+                responseMessage.textContent = 'Your promotion request has been submitted successfully!';
+                promotionForm.reset();
+            } else {
+                responseMessage.textContent = 'Failed to submit your request. Please try again later.';
+            }
+        } catch (error) {
+            responseMessage.textContent = 'An error occurred. Please try again later.';
+            console.error('Error:', error);
+        }
+    });
 });
