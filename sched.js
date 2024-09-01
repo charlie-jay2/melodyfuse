@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const djName = document.getElementById('dj-name').value;
 
             // Send data to Netlify serverless function
-            fetch('/netlify/functions/add-schedule', {
+            fetch('/netlify/functions/add-schedule.js', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ showDate, showTime, djName })
