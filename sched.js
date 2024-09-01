@@ -1,31 +1,25 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Example schedule data
-    const scheduleData = {
-        '26/08/2024': {
-            // Example '00:00': 'AutoDJ',
-        },
-        '27/08/2024': {
-            // Example '00:00': 'AutoDJ',
-        },
-        '28/08/2024': {
-            // Example '00:00': 'AutoDJ',
-        },
-        '29/08/2024': {
-            // Example '00:00': 'AutoDJ',
-        },
-        '20/08/2024': {
-            // Example '00:00': 'AutoDJ',
-        },
-        '31/08/2024': {
-            // Example '00:00': 'AutoDJ',
-        },
-        '01/09/2024': {
-            // Example '00:00': 'AutoDJ',
-        },
-    };
+    const hours = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
 
-    const hours = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']; // List of hours
-    const dates = Object.keys(scheduleData); // List of dates
+    // Function to get the next 7 days starting from today
+    function getNext7Days() {
+        const dates = [];
+        const today = new Date();
+        for (let i = 0; i < 7; i++) {
+            const futureDate = new Date(today);
+            futureDate.setDate(today.getDate() + i);
+            const formattedDate = futureDate.toLocaleDateString('en-GB'); // Format: dd/mm/yyyy
+            dates.push(formattedDate);
+        }
+        return dates;
+    }
+
+    const dates = getNext7Days(); // Get the next 7 days
+
+    const scheduleData = dates.reduce((acc, date) => {
+        acc[date] = {}; // Initialize empty object for each date
+        return acc;
+    }, {});
 
     // Check if the schedule table is present (for schedule.html)
     const headerRow = document.querySelector('#header-row');
@@ -68,5 +62,54 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentDjElement = document.getElementById('current-dj');
     if (currentDjElement) {
         currentDjElement.textContent = currentDJ;
+    }
+
+    // Populate staff-schedule.html form if present
+    const dateSelect = document.getElementById('show-date');
+    const timeSelect = document.getElementById('show-time');
+
+    if (dateSelect && timeSelect) {
+        // Populate the date dropdown
+        dates.forEach(date => {
+            const option = document.createElement('option');
+            option.value = date;
+            option.textContent = date;
+            dateSelect.appendChild(option);
+        });
+
+        // Populate the time dropdown
+        hours.forEach(hour => {
+            const option = document.createElement('option');
+            option.value = hour;
+            option.textContent = hour;
+            timeSelect.appendChild(option);
+        });
+
+        // Form submission handler
+        document.getElementById('schedule-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const showDate = dateSelect.value;
+            const showTime = timeSelect.value;
+            const djName = document.getElementById('dj-name').value;
+
+            // Send data to Netlify serverless function
+            fetch('/.netlify/functions/add-schedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ showDate, showTime, djName })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const formStatus = document.getElementById('form-status');
+                    if (data.success) {
+                        formStatus.textContent = 'Schedule successfully updated!';
+                    } else {
+                        formStatus.textContent = 'Error updating schedule.';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('form-status').textContent = 'Error submitting form.';
+                });
+        });
     }
 });
